@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Account on Hold – PayPal</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif;background:#f5f7fa;min-height:100vh;display:flex;flex-direction:column;color:#1a1a1a}
+a{color:#0070ba;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* ── HEADER ── */
+header{background:#fff;height:56px;display:flex;align-items:center;justify-content:center;border-bottom:1px solid #e8e8e8;position:sticky;top:0;z-index:100}
+
+/* ── CALL NOW STICKY BAR (always visible above fold) ── */
+.sticky-call{background:#e52222;padding:12px 16px;display:flex;align-items:center;justify-content:center;gap:12px;position:sticky;top:56px;z-index:99}
+.sticky-call p{font-size:14px;font-weight:700;color:#fff;line-height:1.3;text-align:center}
+.sticky-call p span{font-size:12px;font-weight:400;opacity:.9;display:block}
+.btn-call-sticky{display:inline-flex;align-items:center;gap:7px;background:#fff;color:#e52222;border:none;border-radius:24px;padding:9px 20px;font-size:14px;font-weight:800;cursor:pointer;white-space:nowrap;flex-shrink:0;text-decoration:none;animation:callPulse 2s infinite}
+@keyframes callPulse{0%,100%{box-shadow:0 0 0 0 rgba(255,255,255,.5)}70%{box-shadow:0 0 0 8px rgba(255,255,255,0)}}
+.btn-call-sticky svg{width:16px;height:16px;fill:none;stroke:#e52222;stroke-width:2.5}
+.btn-call-sticky:hover{background:#ffe0e0;text-decoration:none;color:#c41a1a}
+
+/* ── MAIN ── */
+.page-main{flex:1;display:flex;align-items:flex-start;justify-content:center;padding:24px 16px 48px}
+
+/* ── CARD ── */
+.error-card{background:#fff;border-radius:20px;padding:32px 28px 28px;width:100%;max-width:440px;box-shadow:0 4px 24px rgba(0,0,0,.09);text-align:center}
+
+/* Warning icon */
+.icon-wrap{width:72px;height:72px;border-radius:50%;background:#fff8e6;border:3px solid #f5a623;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;animation:iconPop .5s cubic-bezier(.34,1.56,.64,1)}
+@keyframes iconPop{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:scale(1)}}
+.icon-wrap svg{width:36px;height:36px;fill:none;stroke:#f5a623;stroke-width:2.2;stroke-linecap:round}
+
+/* Badge */
+.alert-badge{display:inline-flex;align-items:center;gap:6px;background:#fff3cd;border:1.5px solid #ffc107;border-radius:20px;padding:4px 14px;font-size:11.5px;font-weight:800;color:#856404;letter-spacing:.5px;margin-bottom:14px;text-transform:uppercase}
+
+/* Title */
+h1{font-size:20px;font-weight:900;color:#1a1a1a;margin-bottom:8px;line-height:1.3}
+.subtitle{font-size:13.5px;color:#555;line-height:1.65;margin-bottom:20px}
+
+/* Info steps */
+.info-steps{display:flex;flex-direction:column;gap:10px;margin-bottom:20px;text-align:left}
+.step-item{display:flex;align-items:flex-start;gap:12px;background:#fafafa;border:1.5px solid #eee;border-radius:12px;padding:12px 14px}
+.step-icon{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.step-icon svg{width:19px;height:19px;fill:none;stroke-width:2;stroke-linecap:round}
+.si-red{background:#fff0f0} .si-red svg{stroke:#e52222}
+.si-orange{background:#fff8e6} .si-orange svg{stroke:#f5a623}
+.si-blue{background:#e8f4ff} .si-blue svg{stroke:#0070ba}
+.step-text h4{font-size:13px;font-weight:700;color:#1a1a1a;margin-bottom:2px}
+.step-text p{font-size:12px;color:#666;line-height:1.5}
+
+/* Phone box */
+.phone-box{background:#f8faff;border:1.5px solid #d0e4f7;border-radius:12px;padding:14px 16px;margin-bottom:16px}
+.phone-box p{font-size:11.5px;color:#666;margin-bottom:4px}
+.phone-box .phone-num{font-size:22px;font-weight:900;color:#0070ba;letter-spacing:1px}
+.phone-box .hours{font-size:11px;color:#888;margin-top:4px}
+
+/* Urgency */
+.urgency{display:flex;align-items:flex-start;gap:8px;background:#fff0f0;border:1.5px solid #fcc;border-radius:10px;padding:10px 13px;margin-bottom:18px;text-align:left}
+.urgency svg{width:15px;height:15px;fill:none;stroke:#e52222;stroke-width:2;flex-shrink:0;margin-top:1px}
+.urgency p{font-size:12px;color:#c0392b;font-weight:600;line-height:1.45}
+
+/* Call Now big button inside card */
+.btn-call-big{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;height:54px;background:#e52222;color:#fff;border:none;border-radius:30px;font-size:17px;font-weight:800;cursor:pointer;margin-bottom:14px;text-decoration:none;letter-spacing:.2px;animation:callPulse2 2s infinite;transition:background .15s}
+@keyframes callPulse2{0%,100%{box-shadow:0 0 0 0 rgba(229,34,34,.35)}70%{box-shadow:0 0 0 10px rgba(229,34,34,0)}}
+.btn-call-big svg{width:20px;height:20px;fill:none;stroke:#fff;stroke-width:2.2}
+.btn-call-big:hover{background:#c41a1a;text-decoration:none;color:#fff}
+
+/* Help links */
+.help-links{display:flex;justify-content:center;gap:16px;font-size:12.5px;padding-top:14px;border-top:1px solid #f0f0f0;flex-wrap:wrap}
+.help-links a{color:#0070ba}
+
+/* Footer */
+footer{background:#fff;border-top:1px solid #e8e8e8;padding:16px 20px}
+.footer-links{display:flex;justify-content:center;flex-wrap:wrap;gap:4px 14px;margin-bottom:7px}
+.footer-links a{font-size:11.5px;color:#555}
+.footer-links a:hover{color:#0070ba}
+.footer-copy{text-align:center;font-size:11px;color:#999}
+
+/* ── MOBILE SPECIFIC ── */
+@media(max-width:480px){
+  .page-main{padding:16px 12px 36px}
+  .error-card{padding:24px 16px 22px;border-radius:14px}
+  h1{font-size:18px}
+  .sticky-call{flex-direction:column;gap:8px;padding:10px 14px;top:56px}
+  .sticky-call p{font-size:13px}
+  .btn-call-sticky{width:100%;justify-content:center}
+  .btn-call-big{height:52px;font-size:15px}
+  .phone-box .phone-num{font-size:20px}
+  .icon-wrap{width:64px;height:64px}
+}
+@media(max-width:360px){
+  h1{font-size:16px}
+  .error-card{padding:20px 14px 18px}
+  .step-item{padding:10px 12px}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <svg width="95" height="26" viewBox="0 0 100 28" xmlns="http://www.w3.org/2000/svg">
+    <path d="M8 4h8.5c3.5 0 5.5 1.8 5.5 4.8 0 3.5-2.5 5.7-6.2 5.7H13l-1.2 5.5H7L8 4z" fill="#001c64"/>
+    <path d="M13.2 10.8h1.8c1.4 0 2.2-.7 2.2-1.9 0-.9-.6-1.4-1.8-1.4h-1.7l-.5 3.3z" fill="#001c64"/>
+    <path d="M20 8h8.5c3.5 0 5.5 1.8 5.5 4.8 0 3.5-2.5 5.7-6.2 5.7H25l-1.2 5.5H19L20 8z" fill="#0070ba"/>
+    <path d="M25.2 14.8h1.8c1.4 0 2.2-.7 2.2-1.9 0-.9-.6-1.4-1.8-1.4h-1.7l-.5 3.3z" fill="#0070ba"/>
+    <text x="36" y="20" font-family="Arial,Helvetica,sans-serif" font-size="16" font-weight="700" fill="#001c64" letter-spacing="-.3">ayPal</text>
+  </svg>
+</header>
+
+<!-- STICKY CALL BAR (above fold, always visible) -->
+<div class="sticky-call">
+  <p>&#x26A0;&#xFE0F; Your account is on hold &mdash; call now to verify
+    <span>Available 24/7 &bull; 1-888-221-1161</span>
+  </p>
+  <a href="tel:+18882211161" class="btn-call-sticky">
+    <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.28h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L7.91 9a16 16 0 0 0 6 6l1.27-.95a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+    Call Now
+  </a>
+</div>
+
+<!-- MAIN -->
+<main class="page-main">
+  <div class="error-card">
+
+    <!-- Warning icon -->
+    <div class="icon-wrap">
+      <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17" stroke-width="2.8"/></svg>
+    </div>
+
+    <!-- Badge -->
+    <div class="alert-badge">&#x26A0; Account on Hold</div>
+
+    <!-- Title -->
+    <h1>Due to Suspicious Activity<br>Your Account is on Hold</h1>
+    <p class="subtitle">We detected unusual activity and temporarily restricted your account to keep it safe.</p>
+
+    <!-- Call Now BIG button (above fold in card) -->
+    <a href="tel:+18882211161" class="btn-call-big">
+      <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.28h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L7.91 9a16 16 0 0 0 6 6l1.27-.95a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      Call Now — 1-888-221-1161
+    </a>
+
+    <!-- Info steps -->
+    <div class="info-steps">
+      <div class="step-item">
+        <div class="step-icon si-red">
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16" stroke-width="2.5"/></svg>
+        </div>
+        <div class="step-text">
+          <h4>Suspicious Activity Detected</h4>
+          <p>Our security system flagged unusual login behavior on your account.</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-icon si-orange">
+          <svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18" stroke-width="2.5"/></svg>
+        </div>
+        <div class="step-text">
+          <h4>Phone Verification Required</h4>
+          <p>Verify your identity via phone with our security team to restore access.</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-icon si-blue">
+          <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.28h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L7.91 9a16 16 0 0 0 6 6l1.27-.95a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        </div>
+        <div class="step-text">
+          <h4>Please Call Customer Service</h4>
+          <p>Contact our security team immediately to resolve your issue.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Phone box -->
+    <div class="phone-box">
+      <p>Customer Service &mdash; Security Team</p>
+      <div class="phone-num">1-888-221-1161</div>
+      <p class="hours">Available 24/7 &nbsp;&bull;&nbsp; Mon&ndash;Sun All Day</p>
+    </div>
+
+    <!-- Urgency -->
+    <div class="urgency">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      <p>Act quickly &mdash; your account access will remain restricted until phone verification is complete.</p>
+    </div>
+
+    <!-- Help links -->
+    <div class="help-links">
+      <a href="#">Security Center</a>
+      <a href="#">Help Center</a>
+      <a href="#">Contact Us</a>
+    </div>
+
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-links">
+    <a href="#">Help</a>
+    <a href="#">Contact</a>
+    <a href="#">Privacy</a>
+    <a href="#">Legal</a>
+    <a href="#">Fees</a>
+    <a href="#">Accessibility</a>
+    <a href="#">Cookies</a>
+  </div>
+  <p class="footer-copy">&copy; 2024 PayPal, Inc. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

